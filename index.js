@@ -1,7 +1,7 @@
 const app = require("./src/app");
 
-const PORT = process.env.PGPORT;
+const PORT = 3000;
 
-app.listen(() => {
+app.listen(PORT, () => {
   console.log(`App is listening on ${PORT}`);
 });

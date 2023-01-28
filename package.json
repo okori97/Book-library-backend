@@ -21,7 +21,9 @@
   },
   "homepage": "https://github.com/okori97/Book-library-backend#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "chai": "^4.3.7",
+    "express": "^4.18.2",
+    "sequelize": "^6.28.0"
   },
   "devDependencies": {
     "dotenv": "^16.0.3",
