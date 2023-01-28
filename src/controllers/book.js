@@ -46,6 +46,4 @@ exports.deleteBookById = async (req, res) => {
   }
 
   res.status(204).json(deletedRows);
-
-  console.log(deletedRows);
 };
