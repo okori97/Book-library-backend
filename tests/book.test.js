@@ -1,9 +1,7 @@
 const { Book } = require("../src/models");
-const request = require("supertest");
 const { expect } = require("chai");
+const request = require("supertest");
 const app = require("../src/app");
-const reader = require("../src/models/reader");
-const e = require("express");
 
 describe("/books", () => {
   before(async () => Book.sequelize.sync());

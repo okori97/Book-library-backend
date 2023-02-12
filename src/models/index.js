@@ -2,7 +2,7 @@ const Sequelize = require("sequelize");
 const ReaderModel = require("./reader");
 const BookModel = require("./book");
 
-const { PGPASSWORD, PGUSER, PGHOST, PGPORT, PGDATABASE } = process.env;
+const { PGDATABASE, PGUSER, PGPASSWORD, PGHOST, PGPORT } = process.env;
 
 const setupDatabase = () => {
   const connection = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {

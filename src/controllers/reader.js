@@ -1,11 +1,39 @@
 const { Reader } = require("../models");
 
 exports.createReader = async (req, res) => {
-  const newReader = await Reader.create(req.body);
-  res.status(201).json(newReader);
+  let password = req.body.password;
+  let name = req.body.name;
+  let email = req.body.email;
+
+  if (!email) {
+    res.status(401).json({ error: "You must input an email address" });
+  }
+
+  if (password.length < 9) {
+    res
+      .status(401)
+      .json({ error: "Password must be longer than 8 characters" });
+  }
+
+  if (!name) {
+    res.status(401).json({ error: "reader name cannot be empty" });
+  }
+
+  try {
+    const newReader = await Reader.create(req.body);
+    res.status(201).json(newReader);
+  } catch (error) {
+    if (error instanceof Sequelize.ValidationError) {
+      return res.status(400).json({ error: "it is a Validation Error" });
+    }
+    if (error instanceof Sequelize.UniqueConstraintError) {
+      return res.status(409).json({ error: "Unique Constraint Error" });
+    }
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
-exports.getAllReaders = async (req, res) => {
+exports.getAllReaders = async (_, res) => {
   const result = await Reader.findAll();
   res.status(200).json(result);
 };

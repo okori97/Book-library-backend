@@ -16,17 +16,52 @@ describe("/readers", () => {
         const response = await request(app).post("/readers").send({
           name: "Elizabeth Bennet",
           email: "future_ms_darcy@gmail.com",
-          password: "password",
+          password: "password1",
         });
 
         const newReaderRecord = await Reader.findByPk(response.body.id, {
           raw: true,
         });
 
+        expect(response.body.password).to.have.length.above(8);
         expect(response.status).to.equal(201);
         expect(response.body.name).to.equal("Elizabeth Bennet");
         expect(newReaderRecord.name).to.equal("Elizabeth Bennet");
         expect(newReaderRecord.email).to.equal("future_ms_darcy@gmail.com");
+      });
+
+      it("returns a error message if password is too short", async () => {
+        const response = await request(app).post("/readers").send({
+          name: "Elizabeth Bennet",
+          email: "future_ms_darcy@gmail.com",
+          password: "password",
+        });
+        expect(response.status).to.equal(401);
+        expect(response.body.error).to.equal(
+          "Password must be longer than 8 characters"
+        );
+      });
+
+      it("returns a error message if the name field is empty", async () => {
+        const response = await request(app).post("/readers").send({
+          name: "",
+          email: "future_ms_darcy@gmail.com",
+          password: "password1",
+        });
+
+        expect(response.status).to.equal(401);
+        expect(response.body.error).to.equal("reader name cannot be empty");
+      });
+
+      it("returns a error message if the email field is empty", async () => {
+        const response = await request(app).post("/readers").send({
+          name: "Elizabeth Bennett",
+          email: "",
+          password: "password1",
+        });
+
+        expect(response.status).to.equal(401);
+        expect(response.body.error).to.equal("You must input an email address");
       });
     });
   });
@@ -39,17 +74,17 @@ describe("/readers", () => {
         Reader.create({
           name: "Elizabeth Bennet",
           email: "future_ms_darcy@gmail.com",
-          password: "password",
+          password: "password1",
         }),
         Reader.create({
           name: "Arya Stark",
           email: "vmorgul@me.com",
-          password: "password",
+          password: "password1",
         }),
         Reader.create({
           name: "Lyra Belacqua",
           email: "darknorth123@msn.org",
-          password: "password",
+          password: "password1",
         }),
       ]);
     });
